@@ -1,5 +1,5 @@
 {
-  "name": "generator-display-templates",
+  "name": "generator-display-boilerplate",
   "version": "6.0.17",
   "description": "",
   "homepage": "",
@@ -32,7 +32,7 @@
     "yeoman-generator": "4.3.0",
     "yosay": "^2.0.1"
   },
-  "repository": "mediamonks/generator-display-templates",
+  "repository": "mediamonks/generator-display-boilerplate",
   "devDependencies": {
     "@mediamonks/display-dev-server": "^9.1.2",
     "@mediamonks/display-temple": "^6.1.7",
