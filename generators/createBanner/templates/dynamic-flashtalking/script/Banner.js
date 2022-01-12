@@ -1,5 +1,5 @@
-import Entity from '@mediamonks/temple/Entity';
-import dataBind from "@mediamonks/temple/util/dataBind";
+import Entity from '@mediamonks/display-temple/Entity';
+import dataBind from "@mediamonks/display-temple/util/dataBind";
 
 import Animation from './Animation';
 

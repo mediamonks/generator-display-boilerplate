@@ -10,7 +10,7 @@ module.exports = function hasInitialSetup(ctx) {
   }
 
   if (
-    !json.dependencies['@mediamonks/richmedia-temple-server'] ||
+    !json.dependencies['@mediamonks/display-dev-server'] ||
     !json.scripts.dev ||
     !json.scripts.build
   ) {

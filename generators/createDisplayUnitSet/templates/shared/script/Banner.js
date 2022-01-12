@@ -1,4 +1,4 @@
-import fitText from '@mediamonks/temple/util/fitText';
+import fitText from '@mediamonks/display-temple/util/fitText';
 const WebFont = require('webfontloader');
 
 

@@ -1,14 +1,14 @@
-import Entity from '@mediamonks/temple/Entity';
+import Entity from '@mediamonks/display-temple/Entity';
 import Animation from "./Animation";
 
-import DoubleClickPlatformComponent from '@mediamonks/temple/component/platform/DoubleClickPlatformComponent';
-import EventDispatcherComponent from "@mediamonks/temple/component/EventDispatcherComponent";
-import DoubleClickEventEnum from "@mediamonks/temple/event/DoubleClickEventEnum";
+import DoubleClickPlatformComponent from '@mediamonks/display-temple/component/platform/DoubleClickPlatformComponent';
+import EventDispatcherComponent from "@mediamonks/display-temple/component/EventDispatcherComponent";
+import DoubleClickEventEnum from "@mediamonks/display-temple/event/DoubleClickEventEnum";
 
 import dynamicData from "./DynamicData";
 
-import fitText from '@mediamonks/temple/util/fitText';
-import load from '@mediamonks/temple/util/load';
+import fitText from '@mediamonks/display-temple/util/fitText';
+import load from '@mediamonks/display-temple/util/load';
 
 
 export default class Banner extends Entity {

@@ -8,7 +8,7 @@ module.exports = class App extends Generator {
 
     // Have Yeoman greet the user.
     this.log(`
-Welcome to ${chalk.red('Richmedia Temple Generator')} v${packageJson.version}
+Welcome to ${chalk.red('Display Templates Generator')} v${packageJson.version}
 -
 Create, change and start developing your richmedia units
 `);

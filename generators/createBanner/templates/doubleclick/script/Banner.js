@@ -1,8 +1,8 @@
-import Entity from '@mediamonks/temple/Entity';
-import DoubleClickPlatformComponent from '@mediamonks/temple/component/platform/DoubleClickPlatformComponent';
-import EventDispatcherComponent from "@mediamonks/temple/component/EventDispatcherComponent";
+import Entity from '@mediamonks/display-temple/Entity';
+import DoubleClickPlatformComponent from '@mediamonks/display-temple/component/platform/DoubleClickPlatformComponent';
+import EventDispatcherComponent from "@mediamonks/display-temple/component/EventDispatcherComponent";
 
-import DoubleClickEventEnum from "@mediamonks/temple/event/DoubleClickEventEnum";
+import DoubleClickEventEnum from "@mediamonks/display-temple/event/DoubleClickEventEnum";
 import Animation from "./Animation";
 
 export default class Banner extends Entity {

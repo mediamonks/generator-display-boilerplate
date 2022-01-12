@@ -1,4 +1,4 @@
-module.exports = function createPackageJson({ name = 'richmedia-temple' }) {
+module.exports = function createPackageJson({ name = 'display-temple' }) {
   return {
     name,
     version: '1.0.0',
@@ -9,15 +9,15 @@ module.exports = function createPackageJson({ name = 'richmedia-temple' }) {
       npm: '>= 14.9.0',
     },
     scripts: {
-      dev: "rds-dev",
-      build: "rds-build",
-      preview: './node_modules/.bin/henk',
+      dev: "dds-dev",
+      build: "dds-build",
+      preview: './node_modules/.bin/display-upload',
     },
     license: 'ISC',
     dependencies: {
-      "@mediamonks/richmedia-temple-server": "^7.4.1",
-      "@mediamonks/temple": "^6.1.0",
-      "@mediamonks/henk": "^1.1.1",
+      "@mediamonks/display-dev-server": "^9.1.2",
+      "@mediamonks/display-temple": "^6.1.7",
+      "@mediamonks/display-upload": "^1.5.7",
       "webfontloader": "^1.6.28"
     },
   };

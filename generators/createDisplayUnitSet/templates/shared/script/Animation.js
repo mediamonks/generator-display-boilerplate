@@ -1,4 +1,4 @@
-import FrameAnimation from "@mediamonks/temple/animation/FrameAnimation"
+import FrameAnimation from "@mediamonks/display-temple/animation/FrameAnimation"
 
 export default class Animation extends FrameAnimation {
   /**

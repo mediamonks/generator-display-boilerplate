@@ -1,6 +1,6 @@
-import Entity from '@mediamonks/temple/Entity';
-import dataBind from "@mediamonks/temple/util/dataBind";
-import fitText from '@mediamonks/temple/util/fitText';
+import Entity from '@mediamonks/display-temple/Entity';
+import dataBind from "@mediamonks/display-temple/util/dataBind";
+import fitText from '@mediamonks/display-temple/util/fitText';
 
 export default class Banner extends Entity {
 
