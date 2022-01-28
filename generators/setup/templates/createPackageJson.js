@@ -11,7 +11,7 @@ module.exports = function createPackageJson({ name = 'display-temple' }) {
     scripts: {
       dev: "dds-dev",
       build: "dds-build",
-      preview: './node_modules/.bin/display-upload',
+      preview: 'display-upload',
     },
     license: 'ISC',
     dependencies: {
