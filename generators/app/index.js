@@ -1,6 +1,11 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const hasInitialSetup = require('../../util/hasInitialSetup');
+const tasks = {
+  quick: 'Create quick unit (with default parameters)',
+  multiple: 'Create display units ( you can create multiple or just one )',
+  banner3D: 'create a 3D banner' 
+}
 
 module.exports = class App extends Generator {
   async questions() {
@@ -8,10 +13,12 @@ module.exports = class App extends Generator {
 
     // Have Yeoman greet the user.
     this.log(`
-Welcome to ${chalk.red('Display Templates Generator')} v${packageJson.version}
--
-Create, change and start developing your richmedia units
-`);
+    Welcome to ${chalk.red('Display Templates Generator')} v${packageJson.version}
+    -
+    Create, change and start developing your display units
+    `);
+
+    console.log(tasks)
 
     this.result = await this.prompt([
       {
@@ -19,10 +26,9 @@ Create, change and start developing your richmedia units
         name: 'todo',
         message: 'What do you want to do?',
         choices: [
-          'create single display unit',
-          'create display unit set ( multiple units )',
-          // 'create a 3D banner',
-          // {name: 'create spritesheet', disabled: false}
+          tasks.quick,
+          tasks.multiple,
+          //tasks.banner3D,
         ],
       },
     ]);
@@ -31,16 +37,16 @@ Create, change and start developing your richmedia units
   async action() {
 
     switch (this.result.todo) {
-      case 'create single display unit': {
+      case tasks.quick: {
         if (!hasInitialSetup(this)) {
           this.composeWith(require.resolve('../setup'), { options: '' });
         }
 
-        this.composeWith(require.resolve('../createBanner'), { options: '' });
+        this.composeWith(require.resolve('../createDisplayQuickUnit'), { set: ['300x250'], outputPath: './src/plain/', type: 'plain' });
         break;
       }
 
-      case 'create display unit set ( multiple units )': {
+      case tasks.multiple: {
         if (!hasInitialSetup(this)) {
           this.composeWith(require.resolve('../setup'), { options: '' });
         }
@@ -49,10 +55,10 @@ Create, change and start developing your richmedia units
         break;
       }
 
-      case 'create a 3D banner': {
-        this.composeWith(require.resolve('../create3DBanner'), { options: '' });
-        break;
-      }
+      // case tasks.banner3D: {
+      //   this.composeWith(require.resolve('../create3DBanner'), { options: '' });
+      //   break;
+      // }
 
       default: {
         break;

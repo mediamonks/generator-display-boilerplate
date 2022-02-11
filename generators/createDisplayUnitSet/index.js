@@ -34,9 +34,9 @@ module.exports = class extends Generator {
           message: 'Please select a type you want:',
           choices: [
             // { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
+            { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
             { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-            { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING },
-            { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN }
+            { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING }
           ],
         },
       ])),
@@ -48,7 +48,7 @@ module.exports = class extends Generator {
         type: 'input',
         name: 'outputPath',
         message: 'Where do you want to put it?',
-        default: `./src/${this.result.type}_${this.result.set.join('_')}/`,
+        default: `./src/${this.result.type}_${this.result.set.join('_')}/`, // TODO: remove weird foldername
         validate: input => isPathInside(path.resolve(input), path.resolve(process.cwd())),
       })),
     };
