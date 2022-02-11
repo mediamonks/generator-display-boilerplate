@@ -48,7 +48,7 @@ module.exports = class extends Generator {
         type: 'input',
         name: 'outputPath',
         message: 'Where do you want to put it?',
-        default: `./src/${this.result.type}_${this.result.set.join('_')}/`, // TODO: remove weird foldername
+        default: `./src/${this.result.type}/`,
         validate: input => isPathInside(path.resolve(input), path.resolve(process.cwd())),
       })),
     };

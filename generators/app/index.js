@@ -18,8 +18,6 @@ module.exports = class App extends Generator {
     Create, change and start developing your display units
     `);
 
-    console.log(tasks)
-
     this.result = await this.prompt([
       {
         type: 'list',
