@@ -17,12 +17,14 @@ module.exports = class App extends Generator {
 
     this.hasArgsUnits = (this.options.units) ? true : false;
 
-    this.config.set('argsContext', {
-      units: this.options.units.split(','),
-      type: this.options.type,
-      outputPath: `./src/${this.options.type}/`,
-      hasArgsUnits: this.hasArgsUnits
-    });
+    if (this.hasArgsUnits) {
+      this.config.set('argsContext', {
+        units: this.options.units.split(','),
+        type: (this.options.type) ? this.options.type : 'plain',
+        outputPath: `./src/${this.options.type}/`,
+        hasArgsUnits: this.hasArgsUnits
+      });
+    } 
   }
 
   async questions() {
