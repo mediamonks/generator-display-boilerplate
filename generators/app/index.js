@@ -4,7 +4,8 @@ const hasInitialSetup = require('../../util/hasInitialSetup');
 const tasks = {
   quick: 'Create quick unit (with default parameters)',
   multiple: 'Create display units (you can create multiple or just one)',
-  banner3D: 'create a 3D banner' 
+  banner3D: 'Create a 3D banner',
+  arguments: 'Create with arguments'
 }
 
 module.exports = class App extends Generator {
@@ -17,7 +18,7 @@ module.exports = class App extends Generator {
     this.hasArgsUnits = (this.options.units) ? true : false;
 
     this.config.set('argsContext', {
-      units: this.options.units,
+      units: this.options.units.split(','),
       type: this.options.type,
       outputPath: `./src/${this.options.type}/`,
       hasArgsUnits: this.hasArgsUnits
@@ -51,18 +52,9 @@ module.exports = class App extends Generator {
   }
 
   async action() {
+    const task = (this.config.get('argsContext').hasArgsUnits) ? 'Create with arguments' : this.result.type;
 
-    if (this.hasArgsUnits) {
-
-      if (!hasInitialSetup(this)) {
-        this.composeWith(require.resolve('../setup'), { options: '' });
-      }
-
-      this.composeWith(require.resolve('../createDisplayWithParameters'));
-
-    } else {
-
-      switch (this.result.todo) {
+      switch (task) {
         case tasks.quick: {
           if (!hasInitialSetup(this)) {
             this.composeWith(require.resolve('../setup'), { options: '' });
@@ -80,6 +72,15 @@ module.exports = class App extends Generator {
           this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
           break;
         }
+
+        case tasks.arguments: {
+          if (!hasInitialSetup(this)) {
+            this.composeWith(require.resolve('../setup'), { options: '' });
+          }
+  
+          this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
+          break;
+        }
   
         // case tasks.banner3D: {
         //   this.composeWith(require.resolve('../create3DBanner'), { options: '' });
@@ -90,8 +91,6 @@ module.exports = class App extends Generator {
           break;
         }
       }
-      
-    }
     
   }
 };

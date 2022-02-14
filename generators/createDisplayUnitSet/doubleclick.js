@@ -10,52 +10,58 @@ module.exports = class extends Generator {
 
   async questions() {
 
-    // searching for existing
-    this.result = {
-      ...this.result,
-      ...(await this.prompt([
-        {
-          type: 'checkbox',
-          name: 'set_html',
-          message: 'Please select display unit with separate html:',
-          choices: bannerChoices
-            .filter(item => this.options.set.find(size => size === item.value))
-        },
-      ])),
-    };
+    if(!this.config.get('argsContext').hasArgsUnits) {
 
-    // searching for existing
-    this.result = {
-      ...this.result,
-      ...(await this.prompt([
-        {
-          type: 'checkbox',
-          name: 'set_js',
-          message: 'Please select display unit with separate javascript:',
-          choices: bannerChoices
-            .filter(item => this.options.set.find(size => size === item.value))
-        },
-      ])),
-    };
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_html',
+            message: 'Please select display unit with separate html:',
+            choices: bannerChoices
+              .filter(item => this.options.set.find(size => size === item.value))
+          },
+        ])),
+      };
 
-    // searching for existing
-    this.result = {
-      ...this.result,
-      ...(await this.prompt([
-        {
-          type: 'checkbox',
-          name: 'set_css',
-          message: 'Please select display unit with separate css:',
-          choices: bannerChoices
-            .filter(item => this.options.set.find(size => size === item.value))
-        },
-      ])),
-    };
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_js',
+            message: 'Please select display unit with separate javascript:',
+            choices: bannerChoices
+              .filter(item => this.options.set.find(size => size === item.value))
+          },
+        ])),
+      };
+
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_css',
+            message: 'Please select display unit with separate css:',
+            choices: bannerChoices
+              .filter(item => this.options.set.find(size => size === item.value))
+          },
+        ])),
+      };
+
+    }
+    
   }
 
   async action() {
+    let globalArgs = (this.config.get('argsContext').hasArgsUnits) ? this.config.get('argsContext') : this.options;
 
-    const outputPathShared = this.destinationPath(path.join(this.options.outputPath, 'shared'));
+    const outputPathShared = this.destinationPath(path.join(globalArgs.outputPath, 'shared'));
 
     this.fs.copy(this.templatePath('shared/css'), path.join(outputPathShared, 'css'));
     this.fs.copy(this.templatePath('shared/img'), path.join(outputPathShared, 'img'));
@@ -66,13 +72,16 @@ module.exports = class extends Generator {
 
     const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
 
-    this.options.set.forEach(size => {
+    globalArgs.units.forEach(size => {
       const [width, height] = size.split('x');
 
-      const outputPath = this.destinationPath(path.join(this.options.outputPath, size));
-      const hasSeparateHTML = this.result.set_html.find(item => item === size);
-      const hasSeparateJS = this.result.set_js.find(item => item === size);
-      const hasSeparateCSS = this.result.set_css.find(item => item === size);
+      const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
+
+      if(!this.config.get('argsContext').hasArgsUnits) {
+        var hasSeparateHTML = this.result.set_html.find(item => item === size);
+        var hasSeparateJS = this.result.set_js.find(item => item === size);
+        var hasSeparateCSS = this.result.set_css.find(item => item === size);
+      }
 
       const entry = {
         ...sourceConfig.settings.entry
@@ -82,31 +91,33 @@ module.exports = class extends Generator {
         ...sourceConfig.content
       };
 
-      if(hasSeparateHTML){
-        entry.html = './index.hbs';
+      if(!this.config.get('argsContext').hasArgsUnits) {
+        if(hasSeparateHTML){
+          entry.html = './index.hbs';
 
-        this.fs.copy(
-          this.templatePath('shared/index.hbs'),
-          this.destinationPath(path.join(outputPath, 'index.hbs'))
-        );
-      }
+          this.fs.copy(
+            this.templatePath('shared/index.hbs'),
+            this.destinationPath(path.join(outputPath, 'index.hbs'))
+          );
+        }
 
-      if(hasSeparateJS){
-        entry.js = './script/main.js';
+        if(hasSeparateJS){
+          entry.js = './script/main.js';
 
-        this.fs.copy(
-          this.templatePath('shared_doubleclick/script'),
-          this.destinationPath(path.join(outputPath, 'script'))
-        );
-      }
+          this.fs.copy(
+            this.templatePath('shared_doubleclick/script'),
+            this.destinationPath(path.join(outputPath, 'script'))
+          );
+        }
 
-      if(hasSeparateCSS){
-        content.css = './css/style.css';
+        if(hasSeparateCSS){
+          content.css = './css/style.css';
 
-        this.fs.copy(
-          this.templatePath('shared/css'),
-          this.destinationPath(path.join(outputPath, 'css'))
-        );
+          this.fs.copy(
+            this.templatePath('shared/css'),
+            this.destinationPath(path.join(outputPath, 'css'))
+          );
+        }
       }
 
       let config = deepmerge(sourceConfig, {

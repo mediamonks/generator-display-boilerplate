@@ -11,51 +11,59 @@ module.exports = class extends Generator {
   async questions() {
     this.log(`Creating banner`);
 
-    // searching for existing
-    this.result = {
-      ...this.result,
-      ...(await this.prompt([
-        {
-          type: 'checkbox',
-          name: 'set',
-          message: 'Please select a set for your unit:',
-          choices: bannerChoices
-        },
-      ])),
-    };
+    if(!this.config.get('argsContext').hasArgsUnits) {
+      
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'units',
+            message: 'Please select a set for your unit:',
+            choices: bannerChoices
+          },
+        ])),
+      };
 
-    // searching for existing
-    this.result = {
-      ...this.result,
-      ...(await this.prompt([
-        {
-          type: 'list',
-          name: 'type',
-          message: 'Please select a type you want:',
-          choices: [
-            // { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-            { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
-            { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-            { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING }
-          ],
-        },
-      ])),
-    };
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'list',
+            name: 'type',
+            message: 'Please select a type you want:',
+            choices: [
+              // { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
+              { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
+              { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
+              { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING }
+            ],
+          },
+        ])),
+      };
 
-    this.result = {
-      ...this.result,
-      ...(await this.prompt({
-        type: 'input',
-        name: 'outputPath',
-        message: 'Where do you want to put it?',
-        default: `./src/${this.result.type}/`,
-        validate: input => isPathInside(path.resolve(input), path.resolve(process.cwd())),
-      })),
-    };
+      // searching for existing
+      this.result = {
+        ...this.result,
+        ...(await this.prompt({
+          type: 'input',
+          name: 'outputPath',
+          message: 'Where do you want to put it?',
+          default: `./src/${this.result.type}/`,
+          validate: input => isPathInside(path.resolve(input), path.resolve(process.cwd())),
+        })),
+      };
+
+    }
+
   }
 
   action() {
-    switch (this.result.type) {
+    const type = (this.config.get('argsContext').hasArgsUnits) ? this.config.get('argsContext').type : this.result.type;
+
+    switch (type) {
       case PlatformChoices.PLAIN: {
         this.composeWith(require.resolve('./plain'), this.result);
         break;
