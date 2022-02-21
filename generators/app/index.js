@@ -20,11 +20,13 @@ module.exports = class App extends Generator {
     
     this.config.set('hasParameters', ((this.options.units) ? true : false));
 
+    const type = (this.options.type != null) ? this.options.type : 'plain';
+
     if (this.config.get('hasParameters')) {
       this.config.set('argsContext', {
         units: this.options.units.replace(/\s/g, '').split(','),
-        type: (this.options.type) ? this.options.type : 'plain',
-        outputPath: `./src/${this.options.type}/`
+        type: type,
+        outputPath: `./src/${type}/`
       });
     }
 
@@ -53,8 +55,6 @@ module.exports = class App extends Generator {
         },
       ]);
     }
-
-    console.log(':::::::::::::::::::::::::::::::::::::::::: 1.questions')
     
   }
 
