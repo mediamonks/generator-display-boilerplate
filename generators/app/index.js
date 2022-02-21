@@ -19,7 +19,7 @@ module.exports = class App extends Generator {
 
     if (this.hasArgsUnits) {
       this.config.set('argsContext', {
-        units: this.options.units.split(','),
+        units: this.options.units.replace(/\s/g, '').split(','),
         type: (this.options.type) ? this.options.type : 'plain',
         outputPath: `./src/${this.options.type}/`,
         hasArgsUnits: this.hasArgsUnits
