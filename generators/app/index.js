@@ -15,16 +15,19 @@ module.exports = class App extends Generator {
     this.argument("units", { type: String, required: false }); // array with sizes, coma separated
     this.argument("type", { type: String, required: false }); // doubleclick, plain, flashtalking, etc
 
-    this.hasArgsUnits = (this.options.units) ? true : false;
+    this.config.delete('hasParameters') // clean prev parameters
+    this.config.delete('argsContext') // clean prev parameters
+    
+    this.config.set('hasParameters', ((this.options.units) ? true : false));
 
-    if (this.hasArgsUnits) {
+    if (this.config.get('hasParameters')) {
       this.config.set('argsContext', {
         units: this.options.units.replace(/\s/g, '').split(','),
         type: (this.options.type) ? this.options.type : 'plain',
-        outputPath: `./src/${this.options.type}/`,
-        hasArgsUnits: this.hasArgsUnits
+        outputPath: `./src/${this.options.type}/`
       });
-    } 
+    }
+
   }
 
   async questions() {
@@ -36,11 +39,11 @@ module.exports = class App extends Generator {
     Create, change and start developing your display units
     `);
     
-    if (!this.hasArgsUnits) {
+    if (!this.config.get('hasParameters')) {
       this.result = await this.prompt([
         {
           type: 'list',
-          name: 'todo',
+          name: 'type',
           message: 'What do you want to do?',
           choices: [
             tasks.quick,
@@ -50,18 +53,21 @@ module.exports = class App extends Generator {
         },
       ]);
     }
+
+    console.log(':::::::::::::::::::::::::::::::::::::::::: 1.questions')
     
   }
 
   async action() {
-    const task = (this.config.get('argsContext').hasArgsUnits) ? 'Create with arguments' : this.result.type;
+    
+    const task = (this.config.get('hasParameters')) ? 'Create with arguments' : this.result.type;
 
       switch (task) {
         case tasks.quick: {
           if (!hasInitialSetup(this)) {
             this.composeWith(require.resolve('../setup'), { options: '' });
           }
-  
+
           this.composeWith(require.resolve('../createDisplayQuickUnit'), { set: ['300x250'], outputPath: './src/plain/', type: 'plain' });
           break;
         }
@@ -70,7 +76,7 @@ module.exports = class App extends Generator {
           if (!hasInitialSetup(this)) {
             this.composeWith(require.resolve('../setup'), { options: '' });
           }
-  
+
           this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
           break;
         }
@@ -79,7 +85,7 @@ module.exports = class App extends Generator {
           if (!hasInitialSetup(this)) {
             this.composeWith(require.resolve('../setup'), { options: '' });
           }
-  
+
           this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
           break;
         }

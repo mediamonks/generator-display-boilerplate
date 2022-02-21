@@ -10,7 +10,7 @@ module.exports = class extends Generator {
 
   async questions() {
 
-    if(!this.config.get('argsContext').hasArgsUnits) {
+    if(!this.config.get('hasParameters')) {
 
       // searching for existing
       this.result = {
@@ -21,7 +21,7 @@ module.exports = class extends Generator {
             name: 'set_html',
             message: 'Please select display unit with separate html:',
             choices: bannerChoices
-              .filter(item => this.options.set.find(size => size === item.value))
+              .filter(item => this.options.units.find(size => size === item.value))
           },
         ])),
       };
@@ -35,7 +35,7 @@ module.exports = class extends Generator {
             name: 'set_js',
             message: 'Please select display unit with separate javascript:',
             choices: bannerChoices
-              .filter(item => this.options.set.find(size => size === item.value))
+              .filter(item => this.options.units.find(size => size === item.value))
           },
         ])),
       };
@@ -49,7 +49,7 @@ module.exports = class extends Generator {
             name: 'set_css',
             message: 'Please select display unit with separate css:',
             choices: bannerChoices
-              .filter(item => this.options.set.find(size => size === item.value))
+              .filter(item => this.options.units.find(size => size === item.value))
           },
         ])),
       };
@@ -59,7 +59,7 @@ module.exports = class extends Generator {
   }
 
   async action() {
-    let globalArgs = (this.config.get('argsContext').hasArgsUnits) ? this.config.get('argsContext') : this.options;
+    let globalArgs = (this.config.get('hasParameters')) ? this.config.get('argsContext') : this.options;
 
     const outputPathShared = this.destinationPath(path.join(globalArgs.outputPath, 'shared'));
 
@@ -77,7 +77,7 @@ module.exports = class extends Generator {
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
-      if(!this.config.get('argsContext').hasArgsUnits) {
+      if(!this.config.get('hasParameters')) {
         var hasSeparateHTML = this.result.set_html.find(item => item === size);
         var hasSeparateJS = this.result.set_js.find(item => item === size);
         var hasSeparateCSS = this.result.set_css.find(item => item === size);
@@ -91,7 +91,7 @@ module.exports = class extends Generator {
         ...sourceConfig.content
       };
 
-      if(!this.config.get('argsContext').hasArgsUnits) {
+      if(!this.config.get('hasParameters')) {
         if(hasSeparateHTML){
           entry.html = './index.hbs';
 

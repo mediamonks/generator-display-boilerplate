@@ -11,7 +11,7 @@ module.exports = class extends Generator {
   async questions() {
     this.log(`Creating banner`);
 
-    if(!this.config.get('argsContext').hasArgsUnits) {
+    if(!this.config.get('argsContext')) {
       
       // searching for existing
       this.result = {
@@ -61,7 +61,7 @@ module.exports = class extends Generator {
   }
 
   action() {
-    const type = (this.config.get('argsContext').hasArgsUnits) ? this.config.get('argsContext').type : this.result.type;
+    const type = (this.config.get('argsContext')) ? this.config.get('argsContext').type : this.result.type;
 
     switch (type) {
       case PlatformChoices.PLAIN: {
