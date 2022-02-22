@@ -150,6 +150,8 @@ module.exports = class extends Generator {
       this.fs.writeJSON(path.join(outputPath, '.richmediarc'), config);
     });
 
+    this.fs.delete('.yo-rc.json');
+
   }
 
 };
