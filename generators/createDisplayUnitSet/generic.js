@@ -1,8 +1,5 @@
 const deepmerge = require('deepmerge');
-const mkdirp = require('mkdirp');
-
 const Generator = require('yeoman-generator');
-const isPathInside = require('is-path-inside');
 const path = require('path');
 const bannerChoices = require("./bannerChoices");
 
@@ -12,7 +9,6 @@ module.exports = class extends Generator {
 
     if(!this.config.get('hasParameters')) {
 
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -26,7 +22,6 @@ module.exports = class extends Generator {
         ])),
       };
 
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -40,7 +35,6 @@ module.exports = class extends Generator {
         ])),
       };
 
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -60,15 +54,26 @@ module.exports = class extends Generator {
 
   async action() {
     let globalArgs = (this.config.get('hasParameters')) ? this.config.get('argsContext') : this.options;
+    var prefixSharedFolder = 'shared';
+
+    if (globalArgs.type  == 'doubleclick') {
+      prefixSharedFolder = 'shared_doubleclick';
+    } else if (globalArgs.type  == 'flashtalking') { 
+      prefixSharedFolder = 'shared_flashtalking';
+    }
 
     const outputPathShared = this.destinationPath(path.join(globalArgs.outputPath, 'shared'));
 
     this.fs.copy(this.templatePath('shared/css'), path.join(outputPathShared, 'css'));
     this.fs.copy(this.templatePath('shared/img'), path.join(outputPathShared, 'img'));
+    this.fs.copy(this.templatePath('shared/script'), path.join(outputPathShared, 'script'));
+    this.fs.copy(this.templatePath('shared/fonts'), path.join(outputPathShared, 'fonts'));
     this.fs.copy(this.templatePath('shared/.sharedrc'), path.join(outputPathShared, '.sharedrc'));
+    this.fs.copy(this.templatePath(`${prefixSharedFolder}/index.hbs`), path.join(outputPathShared, 'index.hbs'));
 
-    this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
-    this.fs.copy(this.templatePath('shared_doubleclick/index.hbs'), path.join(outputPathShared, 'index.hbs'));
+    if (globalArgs.type  == 'doubleclick') {
+      this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
+    }
 
     const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
 
@@ -83,6 +88,17 @@ module.exports = class extends Generator {
         var hasSeparateCSS = this.result.set_css.find(item => item === size);
       }
 
+      if (globalArgs.type  == 'flashtalking') {
+        this.fs.copy(this.templatePath('shared_flashtalking/static'), this.destinationPath(path.join(outputPath, 'static')));
+  
+        this.fs.copyTpl(this.templatePath('shared_flashtalking/static/manifest.js'),this.destinationPath(path.join(outputPath, 'static/manifest.js')),
+          {
+            width,
+            height,
+          },
+        );
+      } 
+
       const entry = {
         ...sourceConfig.settings.entry
       };
@@ -96,7 +112,7 @@ module.exports = class extends Generator {
           entry.html = './index.hbs';
 
           this.fs.copy(
-            this.templatePath('shared/index.hbs'),
+            this.templatePath(`${prefixSharedFolder}/index.hbs`),
             this.destinationPath(path.join(outputPath, 'index.hbs'))
           );
         }
@@ -105,7 +121,7 @@ module.exports = class extends Generator {
           entry.js = './script/main.js';
 
           this.fs.copy(
-            this.templatePath('shared_doubleclick/script'),
+            this.templatePath(`${prefixSharedFolder}/script`),
             this.destinationPath(path.join(outputPath, 'script'))
           );
         }

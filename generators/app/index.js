@@ -50,7 +50,6 @@ module.exports = class App extends Generator {
           choices: [
             tasks.quick,
             tasks.multiple,
-            //tasks.banner3D,
           ],
         },
       ]);
@@ -89,11 +88,6 @@ module.exports = class App extends Generator {
           this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
           break;
         }
-  
-        // case tasks.banner3D: {
-        //   this.composeWith(require.resolve('../create3DBanner'), { options: '' });
-        //   break;
-        // }
   
         default: {
           break;

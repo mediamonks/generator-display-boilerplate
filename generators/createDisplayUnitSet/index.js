@@ -1,9 +1,6 @@
-const mkdirp = require('mkdirp');
-
 const Generator = require('yeoman-generator');
 const isPathInside = require('is-path-inside');
 const path = require('path');
-
 const PlatformChoices = require('../../util/data/PlatformChoices');
 const bannerChoices = require("./bannerChoices");
 
@@ -13,7 +10,6 @@ module.exports = class extends Generator {
 
     if(!this.config.get('argsContext')) {
       
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -26,7 +22,6 @@ module.exports = class extends Generator {
         ])),
       };
 
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -35,7 +30,6 @@ module.exports = class extends Generator {
             name: 'type',
             message: 'Please select a type you want:',
             choices: [
-              // { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
               { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
               { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
               { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING }
@@ -44,7 +38,6 @@ module.exports = class extends Generator {
         ])),
       };
 
-      // searching for existing
       this.result = {
         ...this.result,
         ...(await this.prompt({
@@ -61,27 +54,6 @@ module.exports = class extends Generator {
   }
 
   action() {
-    const type = (this.config.get('argsContext')) ? this.config.get('argsContext').type : this.result.type;
-
-    switch (type) {
-      case PlatformChoices.PLAIN: {
-        this.composeWith(require.resolve('./plain'), this.result);
-        break;
-      }
-
-      case PlatformChoices.FLASHTALKING: {
-        this.composeWith(require.resolve('./flashtalking'), this.result);
-        break;
-      }
-
-      case PlatformChoices.DOUBLECLICK: {
-        this.composeWith(require.resolve('./doubleclick'), this.result);
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
+    this.composeWith(require.resolve('./generic'), this.result);
   }
 };
