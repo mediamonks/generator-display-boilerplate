@@ -26,8 +26,8 @@
   },
   "repository": "mediamonks/generator-display-boilerplate",
   "devDependencies": {
-    "@mediamonks/display-dev-server": "^9.1.2",
-    "@mediamonks/display-temple": "^6.1.7",
+    "@mediamonks/display-dev-server": "^9.2.1",
+    "@mediamonks/display-temple": "^6.2.0",
     "gsap": "^3.8.0"
   }
 }
