@@ -1,6 +1,6 @@
 {
   "name": "generator-display-boilerplate",
-  "version": "6.1.2",
+  "version": "6.3.0",
   "description": "",
   "homepage": "",
   "author": "",
@@ -26,7 +26,7 @@
   },
   "repository": "mediamonks/generator-display-boilerplate",
   "devDependencies": {
-    "@mediamonks/display-dev-server": "^9.2.1",
+    "@mediamonks/display-dev-server": "^9.3.1",
     "@mediamonks/display-temple": "^6.2.0",
     "gsap": "^3.8.0"
   }
