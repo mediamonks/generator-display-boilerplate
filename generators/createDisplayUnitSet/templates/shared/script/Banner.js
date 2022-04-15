@@ -21,7 +21,6 @@ export default class Banner {
       }
     }
 
-    webFontConfig.timeout = 2000;
     webFontConfig.fontactive = (e) => {
       // console.log(`${e}, was detected. The document is ready and font loading is active`)
     }
@@ -52,6 +51,9 @@ export default class Banner {
 
   setAnimation(animation){
     this.animation = animation;
+    //creates new timeline and pauses it
+    this.animation.getTimeline().paused(true);
+    // this.animation.getTimeline().eventCallback('onComplete', this.handleAnimationComplete);
   }
 
   handleExit = () => {
@@ -80,9 +82,7 @@ export default class Banner {
 
   };
 
-  async start() {
-    await this.init();
-
+  start() {
     this.animation.play();
   }
 }
