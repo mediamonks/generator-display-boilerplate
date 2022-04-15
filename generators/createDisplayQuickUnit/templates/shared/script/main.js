@@ -6,5 +6,12 @@ import Animation from "./Animation";
 import config from "richmediaconfig";
 
 const banner = new Banner(config);
-banner.setAnimation(new Animation(document.querySelector('.banner'), config));
-banner.start();
+//first load fonts, load images etc in the init animation
+banner.init().then(
+  () => {
+    //initializes animation and creates main timeline
+    banner.setAnimation(new Animation(document.querySelector('.banner'), config));
+    //plays banner
+    banner.start()
+  }
+)

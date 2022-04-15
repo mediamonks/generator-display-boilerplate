@@ -32,8 +32,11 @@ export default class Banner {
     fitText([title, ctaCopy]);
   }
 
-  addAnimation(animation){
+  setAnimation(animation){
     this.animation = animation;
+    //creates new timeline and pauses it
+    this.animation.getTimeline().paused(true);
+    // this.animation.getTimeline().eventCallback('onComplete', this.handleAnimationComplete);
   }
 
   async addEventListeners() {
@@ -72,9 +75,7 @@ export default class Banner {
 
   };
 
-  async start(){
-    await this.init();
-
+  start() {
     this.animation.play();
   }
 }
