@@ -15,7 +15,7 @@ module.exports = function createPackageJson({ name = 'display-temple' }) {
     },
     license: 'ISC',
     dependencies: {
-      "@mediamonks/display-dev-server": "^9.3.7",
+      "@mediamonks/display-dev-server": "^9.3.8",
       "@mediamonks/display-temple": "^6.2.1",
       "@mediamonks/display-upload": "^1.5.7",
       "webfontloader": "^1.6.28"
