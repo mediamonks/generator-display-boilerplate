@@ -5,7 +5,7 @@ import Animation from "./Animation";
 // inherits from a other .richmediarc it will also contain those files.
 import config from "richmediaconfig";
 
-const banner = new Banner(config);
+const banner = new Banner(document.querySelector('.banner'), config);
 //first load fonts, load images etc in the init animation
 banner.init().then(
   () => {
