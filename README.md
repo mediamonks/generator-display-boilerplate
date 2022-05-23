@@ -3,7 +3,7 @@
 > Generator to scaffold a display advertising project
 
 ## Getting started
-See https://mediamonks.githu1`b.com/generator-display-boilerplate for documentation to getting started.
+See https://mediamonks.github.io/display-advertising-docs/docs/getting-started/installation for documentation to getting started.
 
 ## Installation
 
