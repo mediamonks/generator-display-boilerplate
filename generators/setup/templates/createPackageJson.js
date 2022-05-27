@@ -6,7 +6,8 @@ module.exports = function createPackageJson({ name = 'display-temple' }) {
     homepage: '',
     author: '',
     engines: {
-      npm: '>= 14.9.0',
+      node: '>= 16',
+      npm: '>= 8',
     },
     scripts: {
       dev: "dds-dev",
