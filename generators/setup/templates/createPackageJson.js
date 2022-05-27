@@ -10,15 +10,15 @@ module.exports = function createPackageJson({ name = 'display-temple' }) {
       npm: '>= 8',
     },
     scripts: {
-      dev: "dds-dev",
-      build: "dds-build",
+      dev: "dds --mode development",
+      build: "dds --mode production",
       preview: 'display-upload',
     },
     license: 'ISC',
     dependencies: {
-      "@mediamonks/display-dev-server": "^9.3.8",
-      "@mediamonks/display-temple": "^6.2.1",
-      "@mediamonks/display-upload": "^1.5.7",
+      "@mediamonks/display-dev-server": "^10.0.0",
+      "@mediamonks/display-temple": "^6.2.2",
+      "@mediamonks/display-upload": "^1.5.10",
       "webfontloader": "^1.6.28"
     },
   };
