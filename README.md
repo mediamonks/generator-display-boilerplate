@@ -1,4 +1,9 @@
-﻿# generator-display-boilerplate [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+﻿# Display Boilerplate
+[![npm-version](https://img.shields.io/npm/v/generator-display-boilerplate)](https://www.npmjs.com/package/generator-display-boilerplate)
+[![npm-downloads](https://img.shields.io/npm/dm/generator-display-boilerplate)](https://www.npmjs.com/package/generator-display-boilerplate)
+[![github-contributors](https://img.shields.io/github/contributors/mediamonks/generator-display-boilerplate)](https://github.com/mediamonks/generator-display-boilerplate/graphs/contributors)
+[![github-activity](https://img.shields.io/github/commit-activity/m/mediamonks/generator-display-boilerplate)](https://github.com/mediamonks/generator-display-boilerplate/commits/master)
+[![libraries.io-dependencies](https://img.shields.io/librariesio/github/mediamonks/generator-display-boilerplate)](https://libraries.io/github/mediamonks/generator-display-boilerplate)
 
 > Generator to scaffold a display advertising project
 
@@ -11,7 +16,7 @@ First, install [Yeoman](http://yeoman.io) and generator-display-boilerplate usin
 
 open terminal or cmd or git bash
 
-then check your node.js version first. Needs to be 8 or higher.
+then check your node.js version first. Needs to be 16 or higher.
 ```bash
 node -v
 ```
@@ -26,22 +31,10 @@ npm install -g generator-display-boilerplate
 Then generate your new project:
 
 ```bash
-yo display-templates
+yo display-boilerplate
 ```
 
 Then follow the instructions on your screen.
 
- - create Banner
- - create 3D Banner
-
-## License
-
-MIT © [Mient-jan Stelling]()
-
-
-[npm-image]: https://badge.fury.io/js/generator-display-boilerplate.svg
-[npm-url]: https://npmjs.org/package/generator-display-boilerplate
-[travis-image]: https://travis-ci.org/mediamonks/generator-display-boilerplate.svg?branch=master
-[travis-url]: https://travis-ci.org/mediamonks/generator-display-boilerplate
-[daviddm-image]: https://david-dm.org/mediamonks/generator-display-boilerplate.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/mediamonks/generator-display-boilerplate
+ - Create quick unit (with default parameters)
+ - Create display units (you can create multiple or just one)
