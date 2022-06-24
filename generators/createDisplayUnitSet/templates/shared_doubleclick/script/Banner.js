@@ -23,7 +23,7 @@ export default class Banner {
     // values of feed are set on container. with data-bind="src: OBJECT_PATH"
     dataBind(this.feed, this.container);
 
-    window.clickTag = this.feed.exit_url.Url;
+    this.mainExit = this.feed.exit_url.Url;
 
     // fit text according to parent container
     const title = document.body.querySelector('.title');
