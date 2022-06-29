@@ -3,3 +3,5 @@ coverage
 /.idea
 .previewsrc
 /build
+googlesheet.*
+.uploadrc
