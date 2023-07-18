@@ -39,10 +39,6 @@
   },
   "content": {
     "css": "./css/style.css",
-    "defaultFonts": [
-      "OpenSans",
-      "OpenSansBold"
-    ],
     "defaultFontUrl": "./css/fonts.css",
     "clickTag": "https://www.google.com",
     "title": "Welcome to this Banner!",
