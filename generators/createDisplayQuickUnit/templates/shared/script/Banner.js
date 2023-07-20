@@ -1,42 +1,16 @@
 import fitText from '@mediamonks/display-temple/util/fitText';
 import politeLoadImages from '@mediamonks/display-temple/util/politeLoadImages';
-const WebFont = require('webfontloader');
-
 
 export default class Banner {
-
   constructor(config) {
     // add required components here
     this.config = config;
   }
 
-  // fontLoading module for the lazy loading of fonts - default is openSans
-  async loadFonts() {
-    let webFontConfig = {}
-
-    webFontConfig = {
-      custom: {
-        families: this.config.content.defaultFonts,
-        urls: [this.config.content.defaultFontUrl]
-      }
-    }
-
-    webFontConfig.fontactive = (e) => {
-      // console.log(`${e}, was detected. The document is ready and font loading is active`)
-    }
-
-    const prom = new Promise(resolve => {
-      webFontConfig.active = resolve
-    });
-
-    WebFont.load(webFontConfig);
-    return prom;
-  }
-
   async init() {
     this.banner = document.body.querySelector('.banner');
-    await politeLoadImages(this.banner)
-    await this.loadFonts(); //need to wait until fonts are loaded. Otherwise we will run fitText on the wrong fonts
+    await politeLoadImages(this.banner);
+    await document.fonts.ready; //need to wait until fonts are loaded. Otherwise we will run fitText on the wrong fonts
 
     const title = document.body.querySelector('.title');
     const ctaCopy = document.body.querySelector('.cta_copy');
@@ -49,7 +23,7 @@ export default class Banner {
     this.domMainExit.addEventListener('mouseout', this.handleRollOut);
   }
 
-  setAnimation(animation){
+  setAnimation(animation) {
     this.animation = animation;
     //creates new timeline and pauses it
     this.animation.getTimeline().paused(true);
@@ -71,19 +45,14 @@ export default class Banner {
   /**
    * When mouse rolls over unit.
    */
-  handleRollOver = () => {
-
-  };
+  handleRollOver = () => {};
 
   /**
    * When mouse rolls out unit.
    */
-  handleRollOut = () => {
-
-  };
+  handleRollOut = () => {};
 
   start() {
     this.animation.play();
   }
 }
-
