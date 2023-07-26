@@ -5,6 +5,7 @@ export default class Banner {
   constructor(config) {
     // add required components here
     this.config = config;
+    this.myFT = new FT();
   }
 
   async init() {
@@ -16,11 +17,13 @@ export default class Banner {
     const ctaCopy = document.body.querySelector('.cta_copy');
     fitText([title, ctaCopy]);
 
-    this.domMainExit = document.body.querySelector('.mainExit');
+    this.domMainExit = this.myFT.$('.mainExit');
 
-    this.domMainExit.addEventListener('click', this.handleClick);
-    this.domMainExit.addEventListener('mouseover', this.handleRollOver);
-    this.domMainExit.addEventListener('mouseout', this.handleRollOut);
+    this.domMainExit.on('click', this.handleClick);
+    this.myFT.applyClickTag(this.domMainExit, 1);
+
+    this.myFT.on('rollover', this.handleRollOver);
+    this.myFT.on('rollout', this.handleRollOut); 
   }
 
   setAnimation(animation){
@@ -45,14 +48,14 @@ export default class Banner {
    * When mouse rolls over unit.
    */
   handleRollOver = () => {
-
+    gsap.to('.cta', {duration: 1, scale: 1.1, ease: 'power2.out'});
   };
 
   /**
    * When mouse rolls out unit.
    */
   handleRollOut = () => {
-
+    gsap.to('.cta', {duration: 1, scale: 1, ease: 'power2.out'})
   };
 
   start() {
