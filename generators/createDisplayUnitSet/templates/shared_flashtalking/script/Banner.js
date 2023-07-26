@@ -31,8 +31,6 @@ export default class Banner {
   }
 
   handleExit = () => {
-    // Using Flashtalking HTML API to manage clicktag
-    myFT.clickTag(1);
     this.animation.getTimeline().progress(1);
   };
 
