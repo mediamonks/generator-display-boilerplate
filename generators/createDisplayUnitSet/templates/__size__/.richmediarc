@@ -5,5 +5,11 @@
       "width": 0,
       "height": 0
     }
+  },
+  "content": {
+    "customCss": "./css/style.css",
+    "title": "Welcome to this Banner!",
+    "logo": "../shared/img/logo.svg",
+    "cta": "CLICK HERE"
   }
 }
