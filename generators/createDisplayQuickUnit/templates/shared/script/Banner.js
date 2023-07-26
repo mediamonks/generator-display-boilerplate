@@ -1,5 +1,6 @@
 import fitText from '@mediamonks/display-temple/util/fitText';
 import politeLoadImages from '@mediamonks/display-temple/util/politeLoadImages';
+import timelineScrubber from '@mediamonks/display-temple/util/timelineScrubber';
 
 export default class Banner {
   constructor(config) {
@@ -21,6 +22,10 @@ export default class Banner {
     this.domMainExit.addEventListener('click', this.handleClick);
     this.domMainExit.addEventListener('mouseover', this.handleRollOver);
     this.domMainExit.addEventListener('mouseout', this.handleRollOut);
+
+    if (DEVELOPMENT) {
+      // domMainExit.style.display = 'none';
+    }
   }
 
   setAnimation(animation) {
@@ -28,6 +33,10 @@ export default class Banner {
     //creates new timeline and pauses it
     this.animation.getTimeline().paused(true);
     // this.animation.getTimeline().eventCallback('onComplete', this.handleAnimationComplete);
+
+    if (DEVELOPMENT) {
+      // timelineScrubber(this.animation.getTimeline());
+    }
   }
 
   handleExit = () => {

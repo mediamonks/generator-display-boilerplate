@@ -1,13 +1,12 @@
 import fitText from '@mediamonks/display-temple/util/fitText';
 import untilEnablerIsInitialized from '@mediamonks/display-temple/doubleclick/untilEnablerIsInitialized';
-import dataBind from "@mediamonks/display-temple/util/dataBind";
-import getEventDispatcher from "@mediamonks/display-temple/doubleclick/getEventDispatcher";
-import Events from "@mediamonks/display-temple/doubleclick/Events";
-import getDynamicData from "./getDynamicData";
-
+import dataBind from '@mediamonks/display-temple/util/dataBind';
+import getEventDispatcher from '@mediamonks/display-temple/doubleclick/getEventDispatcher';
+import Events from '@mediamonks/display-temple/doubleclick/Events';
+import getDynamicData from './getDynamicData';
+import timelineScrubber from '@mediamonks/display-temple/util/timelineScrubber';
 
 export default class Banner {
-
   constructor(container, config = null) {
     // add required components here
     this.config = config;
@@ -32,11 +31,15 @@ export default class Banner {
     fitText([title, ctaCopy]);
   }
 
-  setAnimation(animation){
+  setAnimation(animation) {
     this.animation = animation;
     //creates new timeline and pauses it
     this.animation.getTimeline().paused(true);
     // this.animation.getTimeline().eventCallback('onComplete', this.handleAnimationComplete);
+
+    if (DEVELOPMENT) {
+      // timelineScrubber(this.animation.getTimeline());
+    }
   }
 
   async addEventListeners() {
@@ -64,16 +67,12 @@ export default class Banner {
   /**
    * When mouse rolls over unit.
    */
-  handleRollOver = () => {
-
-  };
+  handleRollOver = () => {};
 
   /**
    * When mouse rolls out unit.
    */
-  handleRollOut = () => {
-
-  };
+  handleRollOut = () => {};
 
   start() {
     this.animation.play();
