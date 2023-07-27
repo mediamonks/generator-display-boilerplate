@@ -35,6 +35,9 @@ export default class Banner {
 
   handleExit = () => {
     this.animation.getTimeline().progress(1);
+    if(!this.myFT.hasLoaded){
+      console.log("Flashtalking clicktag clicked, only functional within the Flashtalking platform or outside of an iframe");
+    }
   };
 
   /**
