@@ -17,13 +17,13 @@ export default class Banner {
     const ctaCopy = document.body.querySelector('.cta_copy');
     fitText([title, ctaCopy]);
 
-    this.domMainExit = this.myFT.$('.mainExit');
-
-    this.domMainExit.on('click', this.handleClick);
+    this.domMainExit = document.body.querySelector('.mainExit');
+    
+    this.domMainExit.addEventListener('click', this.handleClick);
+    this.domMainExit.addEventListener('mouseover', this.handleRollOver);
+    this.domMainExit.addEventListener('mouseout', this.handleRollOut);
+    
     this.myFT.applyClickTag(this.domMainExit, 1);
-
-    this.myFT.on('rollover', this.handleRollOver);
-    this.myFT.on('rollout', this.handleRollOut); 
   }
 
   setAnimation(animation){
