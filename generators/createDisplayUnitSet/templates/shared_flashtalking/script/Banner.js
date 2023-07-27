@@ -48,14 +48,12 @@ export default class Banner {
    * When mouse rolls over unit.
    */
   handleRollOver = () => {
-    gsap.to('.cta', {duration: 1, scale: 1.1, ease: 'power2.out'});
   };
 
   /**
    * When mouse rolls out unit.
    */
   handleRollOut = () => {
-    gsap.to('.cta', {duration: 1, scale: 1, ease: 'power2.out'})
   };
 
   start() {
