@@ -2,10 +2,13 @@ import fitText from '@mediamonks/display-temple/util/fitText';
 import politeLoadImages from '@mediamonks/display-temple/util/politeLoadImages';
 
 export default class Banner {
-  constructor(config) {
+constructor(config) {
     // add required components here
     this.config = config;
     this.myFT = new FT();
+    if (DEVELOPMENT) {
+      this.myFT.testMode = true; //to enable local testing and load the FT api
+    }
   }
 
   async init() {
@@ -35,9 +38,6 @@ export default class Banner {
 
   handleExit = () => {
     this.animation.getTimeline().progress(1);
-    if(!this.myFT.hasLoaded){
-      console.log("Flashtalking clicktag clicked, only functional within the Flashtalking platform or outside of an iframe");
-    }
   };
 
   /**
