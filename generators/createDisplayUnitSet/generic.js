@@ -27,7 +27,11 @@ module.exports = class extends Generator {
 
     if (globalArgs.type  == 'doubleclick') {
       this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
-    }
+    } 
+
+    if (globalArgs.type  == 'flashtalking') {
+      this.fs.copy(this.templatePath('shared_flashtalking/script'), path.join(outputPathShared, 'script'));
+    } 
 
     const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
 
