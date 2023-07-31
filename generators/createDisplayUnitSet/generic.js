@@ -4,45 +4,7 @@ const path = require('path');
 const bannerChoices = require('./bannerChoices');
 
 module.exports = class extends Generator {
-  async questions() {
-    if (!this.config.get('hasParameters')) {
-      this.result = {
-        ...this.result,
-        ...(await this.prompt([
-          {
-            type: 'checkbox',
-            name: 'set_html',
-            message: 'Please select display unit with separate html:',
-            choices: bannerChoices.filter((item) => this.options.units.find((size) => size === item.value)),
-          },
-        ])),
-      };
 
-      this.result = {
-        ...this.result,
-        ...(await this.prompt([
-          {
-            type: 'checkbox',
-            name: 'set_js',
-            message: 'Please select display unit with separate javascript:',
-            choices: bannerChoices.filter((item) => this.options.units.find((size) => size === item.value)),
-          },
-        ])),
-      };
-
-      this.result = {
-        ...this.result,
-        ...(await this.prompt([
-          {
-            type: 'checkbox',
-            name: 'set_css',
-            message: 'Please select display unit with separate css:',
-            choices: bannerChoices.filter((item) => this.options.units.find((size) => size === item.value)),
-          },
-        ])),
-      };
-    }
-  }
 
   async action() {
     let globalArgs = this.config.get('hasParameters') ? this.config.get('argsContext') : this.options;
@@ -78,11 +40,6 @@ module.exports = class extends Generator {
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
-      if (!this.config.get('hasParameters')) {
-        var hasSeparateHTML = this.result.set_html.find((item) => item === size);
-        var hasSeparateJS = this.result.set_js.find((item) => item === size);
-        var hasSeparateCSS = this.result.set_css.find((item) => item === size);
-      }
 
       this.fs.copy(this.templatePath('__size__'), this.destinationPath(outputPath));
 
@@ -109,32 +66,6 @@ module.exports = class extends Generator {
       const content = {
         ...sourceConfig.content,
       };
-
-      if (!this.config.get('hasParameters')) {
-        if (hasSeparateHTML) {
-          entry.html = './index.hbs';
-
-          this.fs.copy(
-            this.templatePath(`${prefixSharedFolder}/index.hbs`),
-            this.destinationPath(path.join(outputPath, 'index.hbs')),
-          );
-        }
-
-        if (hasSeparateJS) {
-          entry.js = './script/main.js';
-
-          this.fs.copy(
-            this.templatePath(`${prefixSharedFolder}/script`),
-            this.destinationPath(path.join(outputPath, 'script')),
-          );
-        }
-
-        if (hasSeparateCSS) {
-          content.css = './css/style.css';
-
-          this.fs.copy(this.templatePath('shared/css'), this.destinationPath(path.join(outputPath, 'css')));
-        }
-      }
 
       let config = deepmerge(sourceConfig, {
         settings: {
