@@ -4,8 +4,6 @@ const path = require('path');
 const bannerChoices = require('./bannerChoices');
 
 module.exports = class extends Generator {
-
-
   async action() {
     let globalArgs = this.config.get('hasParameters') ? this.config.get('argsContext') : this.options;
     var prefixSharedFolder = 'shared';
@@ -27,21 +25,29 @@ module.exports = class extends Generator {
 
     if (globalArgs.type == 'doubleclick') {
       this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
-    } 
+    }
 
-    if (globalArgs.type  == 'flashtalking') {
+    if (globalArgs.type == 'flashtalking') {
       this.fs.copy(this.templatePath('shared_flashtalking/script'), path.join(outputPathShared, 'script'));
-    } 
+    }
 
-    const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
+    let sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
+
+    if (globalArgs.type == 'doubleclick') {
+      sourceConfig = this.fs.readJSON(this.templatePath('__size__doubleclick/.richmediarc'));
+    }
 
     globalArgs.units.forEach((size) => {
       const [width, height] = size.split('x');
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
-
       this.fs.copy(this.templatePath('__size__'), this.destinationPath(outputPath));
+      
+
+      if (globalArgs.type == 'doubleclick') {
+        this.fs.copy(this.templatePath('__size__doubleclick'), this.destinationPath(outputPath));
+      }
 
       if (globalArgs.type == 'flashtalking') {
         this.fs.copy(

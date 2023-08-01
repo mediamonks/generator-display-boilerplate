@@ -15,6 +15,7 @@ export default class Banner {
 
   async init() {
     await untilEnablerIsInitialized();
+    await document.fonts.ready; //need to wait until fonts are loaded. Otherwise we will run fitText on the wrong fonts
     await this.addEventListeners();
 
     this.feed = getDynamicData();
@@ -51,6 +52,10 @@ export default class Banner {
     this.dispatcher = await getEventDispatcher();
     //on exit handler
     this.dispatcher.addEventListener(Events.EXIT, this.handleExit);
+
+    if (DEVELOPMENT) {
+      // domMainExit.style.display = 'none';
+    }
   }
 
   handleExit = () => {

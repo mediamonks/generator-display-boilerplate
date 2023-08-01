@@ -39,6 +39,7 @@ body {
   overflow: hidden;
   width: var(--width);
   height: var(--height);
+  font-family: OpenSans, sans-serif;
   background-color: var(--content-bgcolor);
 }
 

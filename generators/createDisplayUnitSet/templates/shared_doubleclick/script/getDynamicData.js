@@ -17,7 +17,7 @@ export default function getDynamicData() {
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].default = true;
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].active = true;
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].version = ["0"];
-  devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].text = "Welcome to this 0 Banner!";
+  devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].title = "Welcome to this 0 Banner!";
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].logo = {};
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].logo.Type = "file";
   devDynamicContent.generator_richmedia_temple_framework_test_feed_main[0].logo.Url = "https://s0.2mdn.net/ads/richmedia/studio/33345/33345_20210113054941196_logo.svg";
