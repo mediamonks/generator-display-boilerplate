@@ -1,6 +1,9 @@
 {
   "settings": {
-    "browserSupport": ["> 1%", "not ie 11"],
+    "browserSupport": [
+      "> 1%",
+      "not ie 11"
+    ],
     "optimizations": {
       "css": true,
       "image": true,
@@ -39,7 +42,7 @@
   },
   "content": {
     "css": "./css/style.css",
-    "defaultFontUrl": "./css/fonts.css",
+    "fontsCss": "./css/fonts.css",
     "clickTag": "https://www.google.com",
     "bgcolor": "#FFFFFF"
   }

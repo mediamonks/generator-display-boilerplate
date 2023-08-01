@@ -24,6 +24,7 @@ module.exports = class extends Generator {
     this.fs.copy(this.templatePath(`${prefixSharedFolder}/index.hbs`), path.join(outputPathShared, 'index.hbs'));
 
     if (globalArgs.type == 'doubleclick') {
+      this.fs.copy(this.templatePath(`${prefixSharedFolder}/.sharedrc`), path.join(outputPathShared, '.sharedrc'));
       this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
     }
 
@@ -33,21 +34,10 @@ module.exports = class extends Generator {
 
     let sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
 
-    if (globalArgs.type == 'doubleclick') {
-      sourceConfig = this.fs.readJSON(this.templatePath('__size__doubleclick/.richmediarc'));
-    }
-
     globalArgs.units.forEach((size) => {
       const [width, height] = size.split('x');
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
-
-      this.fs.copy(this.templatePath('__size__'), this.destinationPath(outputPath));
-      
-
-      if (globalArgs.type == 'doubleclick') {
-        this.fs.copy(this.templatePath('__size__doubleclick'), this.destinationPath(outputPath));
-      }
 
       if (globalArgs.type == 'flashtalking') {
         this.fs.copy(
