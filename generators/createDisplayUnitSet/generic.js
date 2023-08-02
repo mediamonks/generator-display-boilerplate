@@ -10,21 +10,20 @@ module.exports = class extends Generator {
     const basePlatform = 'default';
     const platform = globalArgs.type == 'plain' ? basePlatform : globalArgs.type;
     const defaulInputPath = this.templatePath(basePlatform);
-    const platformInputPath = this.templatePath(globalArgs.type);
+    const platformInputPath = this.templatePath(path.join(globalArgs.type));
     const outputPath = this.destinationPath(path.join(globalArgs.outputPath));
-    const defaultSourceConfig = this.fs.readJSON(this.templatePath(`default/__size__/.richmediarc`));
+    const defaultSourceConfig = this.fs.readJSON(this.templatePath(`${basePlatform}/__size__/.richmediarc`));
 
     this.fs.copy(path.join(defaulInputPath, 'shared'), path.join(outputPath, 'shared'), { globOptions: { dot: true } });
 
-    //overwite with platform specific setup
-    if (platform != basePlatform && this.fs.exists(path.join(platformInputPath, 'shared'))) {
+    //overwite with platform specific shared setup
+    if (platform != basePlatform) {
       this.fs.copy(path.join(platformInputPath, 'shared'), path.join(outputPath, 'shared'), {
-        globOptions: { dot: true },
+        globOptions: { ignoreNoMatch: true, dot: true },
       });
     }
 
-    let sourceConfig = this.fs.readJSON(this.templatePath(`${platform}/__size__/.richmediarc`), [defaultSourceConfig]);
-    console.log(sourceConfig);
+    let sourceConfig = this.fs.readJSON(this.templatePath(`${platform}/__size__/.richmediarc`), defaultSourceConfig);
 
     globalArgs.units.forEach((size) => {
       const [width, height] = size.split('x');
@@ -49,7 +48,7 @@ module.exports = class extends Generator {
           },
         );
       }
-      console.log(sourceConfig.settings);
+
       const entry = {
         ...sourceConfig.settings.entry,
       };

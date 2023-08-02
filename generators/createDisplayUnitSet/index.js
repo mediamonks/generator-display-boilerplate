@@ -2,14 +2,15 @@ const Generator = require('yeoman-generator');
 const isPathInside = require('is-path-inside');
 const path = require('path');
 const PlatformChoices = require('../../util/data/PlatformChoices');
-const bannerChoices = require("./bannerChoices");
+const bannerChoices = require('./bannerChoices');
 
 module.exports = class extends Generator {
   async questions() {
     this.log(`Creating banner`);
 
-    if(!this.config.get('argsContext')) {
-      
+    console.log(this.result);
+
+    if (!this.config.get('argsContext') && this.options.task != 'quick') {
       this.result = {
         ...this.result,
         ...(await this.prompt([
@@ -17,7 +18,7 @@ module.exports = class extends Generator {
             type: 'checkbox',
             name: 'units',
             message: 'Please select a set for your unit:',
-            choices: bannerChoices
+            choices: bannerChoices,
           },
         ])),
       };
@@ -32,7 +33,7 @@ module.exports = class extends Generator {
             choices: [
               { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
               { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-              { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING }
+              { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING },
             ],
           },
         ])),
@@ -45,12 +46,12 @@ module.exports = class extends Generator {
           name: 'outputPath',
           message: 'Where do you want to put it?',
           default: `./src/${this.result.type}/`,
-          validate: input => isPathInside(path.resolve(input), path.resolve(process.cwd())),
+          validate: (input) => isPathInside(path.resolve(input), path.resolve(process.cwd())),
         })),
       };
-
+    } else {
+      this.result = { ...this.options };
     }
-
   }
 
   action() {
