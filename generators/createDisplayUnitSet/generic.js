@@ -39,6 +39,8 @@ module.exports = class extends Generator {
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
+      this.fs.copy(this.templatePath('__size__'), outputPath);
+
       if (globalArgs.type == 'flashtalking') {
         this.fs.copy(
           this.templatePath('shared_flashtalking/static'),
