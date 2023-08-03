@@ -7,13 +7,13 @@ import getDynamicData from './getDynamicData';
 import timelineScrubber from '@mediamonks/display-temple/util/timelineScrubber';
 
 export default class Banner {
-  constructor(container, config = null) {
+  constructor(config) {
     // add required components here
     this.config = config;
-    this.container = container;
   }
 
   async init() {
+    this.banner = document.body.querySelector('.banner');
     await untilEnablerIsInitialized();
     await document.fonts.ready; //need to wait until fonts are loaded. Otherwise we will run fitText on the wrong fonts
     await this.addEventListeners();
@@ -21,7 +21,7 @@ export default class Banner {
     this.feed = getDynamicData();
 
     // values of feed are set on container. with data-bind="src: OBJECT_PATH"
-    dataBind(this.feed, this.container);
+    dataBind(this.feed, this.banner);
 
     this.mainExit = this.feed.exit_url.Url;
 
