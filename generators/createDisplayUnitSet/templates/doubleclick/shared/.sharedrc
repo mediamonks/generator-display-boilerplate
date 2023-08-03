@@ -4,6 +4,8 @@
       "> 1%",
       "not ie 11"
     ],
+    "maxFileSize": 150,
+    "optimizeToFileSize": false,
     "optimizations": {
       "css": true,
       "image": true,
