@@ -30,11 +30,7 @@ module.exports = class extends Generator {
             type: 'list',
             name: 'type',
             message: 'Please select a type you want:',
-            choices: [
-              { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
-              { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-              { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING },
-            ],
+            choices: Object.entries(PlatformChoices).map(([_, value]) => ({ name: value, value })),
           },
         ])),
       };
