@@ -8,8 +8,6 @@ module.exports = class extends Generator {
   async questions() {
     this.log(`Creating banner`);
 
-    console.log(this.result);
-
     if (!this.config.get('argsContext') && this.options.task != 'quick') {
       this.result = {
         ...this.result,
