@@ -1,0 +1,52 @@
+:root {
+  --width: var(--settings-size-width)px;
+  --height: var(--settings-size-height)px;
+}
+
+html {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fullscreen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--width);
+  height: var(--height);
+}
+
+.border {
+  border: 1px solid #000000;
+}
+
+.banner {
+  position: relative;
+  overflow: hidden;
+  width: var(--width);
+  height: var(--height);
+  font-family: OpenSans, sans-serif;
+  background-color: var(--content-bgcolor);
+}
+
+.content {
+  opacity: 0;
+}
+
+.mainExit {
+  cursor: pointer;
+}

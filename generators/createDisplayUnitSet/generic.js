@@ -6,47 +6,41 @@ const bannerChoices = require('./bannerChoices');
 module.exports = class extends Generator {
   async action() {
     let globalArgs = this.config.get('hasParameters') ? this.config.get('argsContext') : this.options;
-    var prefixSharedFolder = 'shared';
 
-    if (globalArgs.type == 'doubleclick') {
-      prefixSharedFolder = 'shared_doubleclick';
-    } else if (globalArgs.type == 'flashtalking') {
-      prefixSharedFolder = 'shared_flashtalking';
+    const basePlatform = 'default';
+    const platform = globalArgs.type == 'plain' ? basePlatform : globalArgs.type;
+    const defaulInputPath = this.templatePath(basePlatform);
+    const platformInputPath = this.templatePath(path.join(globalArgs.type));
+    const outputPath = this.destinationPath(path.join(globalArgs.outputPath));
+    const defaultSourceConfig = this.fs.readJSON(this.templatePath(`${basePlatform}/__size__/.richmediarc`));
+
+    this.fs.copy(path.join(defaulInputPath, 'shared'), path.join(outputPath, 'shared'), { globOptions: { dot: true } });
+
+    //overwite with platform specific shared setup
+    if (platform != basePlatform) {
+      this.fs.copy(path.join(platformInputPath, 'shared'), path.join(outputPath, 'shared'), {
+        globOptions: { ignoreNoMatch: true, dot: true },
+      });
     }
 
-    const outputPathShared = this.destinationPath(path.join(globalArgs.outputPath, 'shared'));
-
-    this.fs.copy(this.templatePath('shared/css'), path.join(outputPathShared, 'css'));
-    this.fs.copy(this.templatePath('shared/img'), path.join(outputPathShared, 'img'));
-    this.fs.copy(this.templatePath('shared/script'), path.join(outputPathShared, 'script'));
-    this.fs.copy(this.templatePath('shared/fonts'), path.join(outputPathShared, 'fonts'));
-    this.fs.copy(this.templatePath('shared/.sharedrc'), path.join(outputPathShared, '.sharedrc'));
-    this.fs.copy(this.templatePath(`${prefixSharedFolder}/index.hbs`), path.join(outputPathShared, 'index.hbs'));
-
-    if (globalArgs.type == 'doubleclick') {
-      this.fs.copy(this.templatePath(`${prefixSharedFolder}/.sharedrc`), path.join(outputPathShared, '.sharedrc'));
-      this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
-    }
-
-    if (globalArgs.type == 'flashtalking') {
-      this.fs.copy(this.templatePath('shared_flashtalking/script'), path.join(outputPathShared, 'script'));
-    }
-
-    const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
+    let sourceConfig = this.fs.readJSON(this.templatePath(`${platform}/__size__/.richmediarc`), defaultSourceConfig);
 
     globalArgs.units.forEach((size) => {
       const [width, height] = size.split('x');
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
-      if (globalArgs.type == 'flashtalking') {
-        this.fs.copy(
-          this.templatePath('shared_flashtalking/static'),
-          this.destinationPath(path.join(outputPath, 'static')),
-        );
+      //copy default setup
+      this.fs.copy(this.templatePath(`${basePlatform}/__size__`), outputPath, { globOptions: { dot: true } });
 
+      //overwite with platform specific setup
+      if (platform != basePlatform && this.fs.exists(this.templatePath(`${platform}/__size__`))) {
+        this.fs.copy(this.templatePath(`${platform}/__size__`), outputPath, { globOptions: { dot: true } });
+      }
+
+      if (platform == 'flashtalking') {
         this.fs.copyTpl(
-          this.templatePath('shared_flashtalking/static/manifest.js'),
+          this.templatePath('flashtalking/__size__/static/manifest.js'),
           this.destinationPath(path.join(outputPath, 'static/manifest.js')),
           {
             width,
