@@ -30,7 +30,7 @@ export default class Banner {
     this.myFT.applyClickTag(this.domMainExit, 1);
 
     if (DEVELOPMENT) {
-      // domMainExit.style.display = 'none';
+      // this.domMainExit.style.display = 'none';
     }
   }
 

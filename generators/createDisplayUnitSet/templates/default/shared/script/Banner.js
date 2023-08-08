@@ -24,7 +24,7 @@ export default class Banner {
     this.domMainExit.addEventListener('mouseout', this.handleRollOut);
 
     if (DEVELOPMENT) {
-      // domMainExit.style.display = 'none';
+      // this.domMainExit.style.display = 'none';
     }
   }
 

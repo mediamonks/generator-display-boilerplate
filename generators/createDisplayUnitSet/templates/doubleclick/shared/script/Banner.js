@@ -54,7 +54,7 @@ export default class Banner {
     this.dispatcher.addEventListener(Events.EXIT, this.handleExit);
 
     if (DEVELOPMENT) {
-      // domMainExit.style.display = 'none';
+      // this.domMainExit.style.display = 'none';
     }
   }
 
