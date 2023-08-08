@@ -8,8 +8,6 @@ module.exports = class extends Generator {
   async questions() {
     this.log(`Creating banner`);
 
-    console.log(this.result);
-
     if (!this.config.get('argsContext') && this.options.task != 'quick') {
       this.result = {
         ...this.result,
@@ -30,11 +28,7 @@ module.exports = class extends Generator {
             type: 'list',
             name: 'type',
             message: 'Please select a type you want:',
-            choices: [
-              { name: PlatformChoices.PLAIN, value: PlatformChoices.PLAIN },
-              { name: PlatformChoices.DOUBLECLICK, value: PlatformChoices.DOUBLECLICK },
-              { name: PlatformChoices.FLASHTALKING, value: PlatformChoices.FLASHTALKING },
-            ],
+            choices: Object.entries(PlatformChoices).map(([_, value]) => ({ name: value, value })),
           },
         ])),
       };

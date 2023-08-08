@@ -46,6 +46,8 @@
     "css": "./css/style.css",
     "fontsCss": "./css/fonts.css",
     "clickTag": "https://www.google.com",
+    "logo": "./img/logo.svg",
+    "cta": "CLICK HERE",
     "bgcolor": "#FFFFFF"
   }
 }
