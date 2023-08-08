@@ -7,7 +7,6 @@
     }
   },
   "content": {
-    "customCss": "./css/style.css",
-    "title": "Welcome to this Banner!"
+    "customCss": "./css/style.css"
   }
 }
