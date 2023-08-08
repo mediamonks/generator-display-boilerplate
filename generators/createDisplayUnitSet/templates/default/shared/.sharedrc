@@ -44,6 +44,7 @@
     "css": "./css/style.css",
     "fontsCss": "./css/fonts.css",
     "clickTag": "https://www.google.com",
+    "title": "Welcome to this Banner!",
     "logo": "./img/logo.svg",
     "cta": "CLICK HERE",
     "bgcolor": "#FFFFFF"
