@@ -3,6 +3,7 @@ const isPathInside = require('is-path-inside');
 const path = require('path');
 const PlatformChoices = require('../../util/data/PlatformChoices');
 const bannerChoices = require('./bannerChoices');
+const FTSubtypeChoices = require('../../util/data/FTSubtypeChoices');
 
 module.exports = class extends Generator {
   async questions() {
@@ -32,6 +33,20 @@ module.exports = class extends Generator {
           },
         ])),
       };
+
+      if(this.result.type === PlatformChoices.FLASHTALKING){
+        this.result = {
+          ...this.result,
+          ...(await this.prompt([
+            {
+              type: 'list',
+              name: 'subtype',
+              message: 'Please select a subtype you want:',
+              choices: Object.entries(FTSubtypeChoices).map(([_, value]) => ({ name: value, value })),
+            },
+          ])),
+        };
+      }
 
       this.result = {
         ...this.result,

@@ -1,7 +1,8 @@
 const deepmerge = require('deepmerge');
 const Generator = require('yeoman-generator');
 const path = require('path');
-const bannerChoices = require('./bannerChoices');
+const bannerChoices = require('./bannerChoices'); // TODO: This is not in use
+const PlatformChoices = require('../../util/data/PlatformChoices');
 
 module.exports = class extends Generator {
   async action() {
@@ -9,8 +10,10 @@ module.exports = class extends Generator {
 
     const basePlatform = 'default';
     const platform = globalArgs.type == 'plain' ? basePlatform : globalArgs.type;
+    const subtype = globalArgs.subtype == 'standard' ? 'default' : globalArgs.subtype;
     const defaulInputPath = this.templatePath(basePlatform);
     const platformInputPath = this.templatePath(path.join(globalArgs.type));
+    const platformWithSubtypeInputPath = this.templatePath(`${globalArgs.type}/${subtype}`);
     const outputPath = this.destinationPath(path.join(globalArgs.outputPath));
     const defaultSourceConfig = this.fs.readJSON(this.templatePath(`${basePlatform}/__size__/.richmediarc`));
 
@@ -18,9 +21,19 @@ module.exports = class extends Generator {
 
     //overwite with platform specific shared setup
     if (platform != basePlatform) {
-      this.fs.copy(path.join(platformInputPath, 'shared'), path.join(outputPath, 'shared'), {
-        globOptions: { ignoreNoMatch: true, dot: true },
-      });
+      if(platform === PlatformChoices.FLASHTALKING) {
+        this.fs.copy(path.join(this.templatePath(`flashtalking/default/`), 'shared'), path.join(outputPath, 'shared'), {
+          globOptions: { ignoreNoMatch: true, dot: true },
+        });
+
+        this.fs.copy(path.join(platformWithSubtypeInputPath, 'shared'), path.join(outputPath, 'shared'), {
+          globOptions: { ignoreNoMatch: true, dot: true },
+        });
+      } else {
+        this.fs.copy(path.join(platformInputPath, 'shared'), path.join(outputPath, 'shared'), {
+          globOptions: { ignoreNoMatch: true, dot: true },
+        });
+      }
     }
 
     let sourceConfig = this.fs.readJSON(this.templatePath(`${platform}/__size__/.richmediarc`), defaultSourceConfig);
@@ -38,10 +51,10 @@ module.exports = class extends Generator {
         this.fs.copy(this.templatePath(`${platform}/__size__`), outputPath, { globOptions: { dot: true } });
       }
 
-      if (platform == 'flashtalking') {
+      if (platform === PlatformChoices.FLASHTALKING) {
         this.fs.copyTpl(
-          this.templatePath('flashtalking/__size__/static/manifest.js'),
-          this.destinationPath(path.join(outputPath, 'static/manifest.js')),
+          this.templatePath(`flashtalking/${subtype}/__size__`),
+          this.destinationPath(path.join(outputPath)),
           {
             width,
             height,

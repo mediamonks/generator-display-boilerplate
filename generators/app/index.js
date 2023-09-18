@@ -92,5 +92,6 @@ module.exports = class App extends Generator {
         break;
       }
     }
+
   }
 };
