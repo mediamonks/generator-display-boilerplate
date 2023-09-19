@@ -1,8 +1,8 @@
 const PlatformChoices = {
   PLAIN: 'plain',
-  FLASHTALKING: 'flashtalking',
-  DOUBLECLICK: 'doubleclick',
-  // DYNAMIC: 'dynamic',
+  FLASHTALKING_STANDARD: 'flashtalking/default',
+  FLASHTALKING_DYNAMIC: 'flashtalking/dynamic',
+  DOUBLECLICK: 'doubleclick'
 };
 
 module.exports = PlatformChoices;
