@@ -1,7 +1,9 @@
 const deepmerge = require('deepmerge');
 const Generator = require('yeoman-generator');
+const fs = require('fs');
 const path = require('path');
-const bannerChoices = require('./bannerChoices');
+const bannerChoices = require('./bannerChoices'); // TODO: This is not in use
+const PlatformChoices = require('../../util/data/PlatformChoices');
 
 module.exports = class extends Generator {
   async action() {
@@ -9,8 +11,10 @@ module.exports = class extends Generator {
 
     const basePlatform = 'default';
     const platform = globalArgs.type == 'plain' ? basePlatform : globalArgs.type;
+
     const defaulInputPath = this.templatePath(basePlatform);
-    const platformInputPath = this.templatePath(path.join(globalArgs.type));
+    const platformInputPath = this.templatePath(globalArgs.type);
+
     const outputPath = this.destinationPath(path.join(globalArgs.outputPath));
     const defaultSourceConfig = this.fs.readJSON(this.templatePath(`${basePlatform}/__size__/.richmediarc`));
 
@@ -33,20 +37,14 @@ module.exports = class extends Generator {
       //copy default setup
       this.fs.copy(this.templatePath(`${basePlatform}/__size__`), outputPath, { globOptions: { dot: true } });
 
-      //overwite with platform specific setup
-      if (platform != basePlatform && this.fs.exists(this.templatePath(`${platform}/__size__`))) {
-        this.fs.copy(this.templatePath(`${platform}/__size__`), outputPath, { globOptions: { dot: true } });
-      }
-
-      if (platform == 'flashtalking') {
-        this.fs.copyTpl(
-          this.templatePath('flashtalking/__size__/static/manifest.js'),
-          this.destinationPath(path.join(outputPath, 'static/manifest.js')),
-          {
-            width,
-            height,
-          },
-        );
+      //overwite with platform specific setup, repacing var width/height when found in files
+      if (platform != basePlatform && fs.existsSync(this.templatePath(`${platform}/__size__`))) {
+        this.fs.copyTpl(this.templatePath(`${platform}/__size__`), outputPath, {
+          width,
+          height,
+          ignoreNoMatch: true,
+          globOptions: { dot: true },
+        });
       }
 
       const entry = {

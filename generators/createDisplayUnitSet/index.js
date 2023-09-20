@@ -28,7 +28,10 @@ module.exports = class extends Generator {
             type: 'list',
             name: 'type',
             message: 'Please select a type you want:',
-            choices: Object.entries(PlatformChoices).map(([_, value]) => ({ name: value, value })),
+            choices: Object.entries(PlatformChoices).map(([_, value]) => ({
+              name: value.split('/').join(' - '),
+              value,
+            })),
           },
         ])),
       };
