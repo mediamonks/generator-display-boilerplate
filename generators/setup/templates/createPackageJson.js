@@ -16,8 +16,8 @@ module.exports = function createPackageJson({ name = 'display-temple' }) {
     },
     license: 'ISC',
     dependencies: {
-      '@mediamonks/display-dev-server': '^11.0.5',
-      '@mediamonks/display-temple': '^6.2.6',
+      '@mediamonks/display-dev-server': '^11.0.11',
+      '@mediamonks/display-temple': '^6.2.8',
       '@mediamonks/display-upload': '^1.6.2',
     },
   };

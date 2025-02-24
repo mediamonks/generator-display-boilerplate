@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="ad.size" content="width={{settings.size.width}},height={{settings.size.height}}">
+
+  <title>{{settings.size.width}}x{{settings.size.height}}</title>
+
+  <link rel="stylesheet" href="{{content.fontsCss}}" type="text/css">
+  <link rel="stylesheet" href="{{content.css}}" type="text/css">
+  <link rel="stylesheet" href="{{content.customCss}}" type="text/css">
+</head>
+
+<body>
+  <div class="banner border" data-bind="style.backgroundColor: bgcolor">
+    <div class="content fullscreen">
+      <div class="title_container">
+        <div class="title" data-bind="html: title"></div>
+      </div>
+      <img class="logo" data-bind="src: logo.Url">
+      <div class="cta">
+        <div class="cta_copy" data-bind="html: cta"></div>
+      </div>
+    </div>
+    <div class="mainExit fullscreen"></div>
+  </div>
+
+  <script src="https://s0.2mdn.net/ads/studio/Enabler.js">
+    // please change profile id.
+    Enabler.setProfileId(10600049);
+  </script>
+  <script src="https://s0.2mdn.net/ads/studio/cached_libs/gsap_3.11.5_min.js"></script>
+</body>
+</html>
