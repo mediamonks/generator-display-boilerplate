@@ -38,7 +38,7 @@ module.exports = class App extends Generator {
     this.log(`
     Welcome to ${chalk.red('Display Templates Generator')} v${packageJson.version}
     -
-    Create, change and start developing your display units IS THIS UPDATED?
+    Create, change and start developing your display units with ease.
     `);
     
     if (!this.config.get('hasParameters')) {
