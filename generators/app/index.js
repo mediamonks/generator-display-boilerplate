@@ -18,9 +18,9 @@ module.exports = class App extends Generator {
     this.config.delete('hasParameters') // clean prev parameters
     this.config.delete('argsContext') // clean prev parameters
     
-    this.config.set('hasParameters', ((this.options.units) ? true : false));
+    this.config.set('hasParameters', Boolean(this.options.units));
 
-    const type = (this.options.type != null) ? this.options.type : 'plain';
+    const type = this.options.type || 'plain';
 
     if (this.config.get('hasParameters')) {
       this.config.set('argsContext', {
@@ -38,7 +38,7 @@ module.exports = class App extends Generator {
     this.log(`
     Welcome to ${chalk.red('Display Templates Generator')} v${packageJson.version}
     -
-    Create, change and start developing your display units
+    Create, change and start developing your display units IS THIS UPDATED?
     `);
     
     if (!this.config.get('hasParameters')) {
@@ -61,38 +61,31 @@ module.exports = class App extends Generator {
     
     const task = (this.config.get('hasParameters')) ? 'Create with arguments' : this.result.type;
 
-      switch (task) {
-        case tasks.quick: {
-          if (!hasInitialSetup(this)) {
-            this.composeWith(require.resolve('../setup'), { options: '' });
-          }
+    // Always run setup first if needed
+    if (!hasInitialSetup(this)) {
+      await this.composeWith(require.resolve('../setup'), { options: '' });
+    }
 
-          this.composeWith(require.resolve('../createDisplayQuickUnit'), { set: ['300x250'], outputPath: './src/plain/', type: 'plain' });
-          break;
-        }
-  
-        case tasks.multiple: {
-          if (!hasInitialSetup(this)) {
-            this.composeWith(require.resolve('../setup'), { options: '' });
-          }
-
-          this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
-          break;
-        }
-
-        case tasks.arguments: {
-          if (!hasInitialSetup(this)) {
-            this.composeWith(require.resolve('../setup'), { options: '' });
-          }
-
-          this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
-          break;
-        }
-  
-        default: {
-          break;
-        }
+    switch (task) {
+      case tasks.quick: {
+       await this.composeWith(require.resolve('../createDisplayQuickUnit'), {
+          set: ['300x250'],
+          outputPath: './src/plain/',
+          type: 'plain'
+        });
+        break;
       }
+
+      case tasks.multiple:
+      case tasks.arguments:
+        await this.composeWith(require.resolve('../createDisplayUnitSet'), {
+          options: ''
+        });
+        break;
+
+      default:
+        break;
+    }
     
   }
 };
