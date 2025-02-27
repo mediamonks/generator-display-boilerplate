@@ -1,59 +1,140 @@
 const deepmerge = require('deepmerge');
 const Generator = require('yeoman-generator');
-const fs = require('fs');
 const path = require('path');
-const bannerChoices = require('./bannerChoices'); // TODO: This is not in use
-const PlatformChoices = require('../../util/data/PlatformChoices');
+const bannerChoices = require("./bannerChoices");
 
 module.exports = class extends Generator {
+
+  async questions() {
+
+    if(!this.config.get('hasParameters')) {
+
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_html',
+            message: 'Please select display unit with separate html:',
+            choices: bannerChoices
+              .filter(item => this.options.units.find(size => size === item.value))
+          },
+        ])),
+      };
+
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_js',
+            message: 'Please select display unit with separate javascript:',
+            choices: bannerChoices
+              .filter(item => this.options.units.find(size => size === item.value))
+          },
+        ])),
+      };
+
+      this.result = {
+        ...this.result,
+        ...(await this.prompt([
+          {
+            type: 'checkbox',
+            name: 'set_css',
+            message: 'Please select display unit with separate css:',
+            choices: bannerChoices
+              .filter(item => this.options.units.find(size => size === item.value))
+          },
+        ])),
+      };
+
+    }
+    
+  }
+
   async action() {
-    let globalArgs = this.config.get('hasParameters') ? this.config.get('argsContext') : this.options;
+    let globalArgs = (this.config.get('hasParameters')) ? this.config.get('argsContext') : this.options;
+    var prefixSharedFolder = 'shared';
 
-    const basePlatform = 'default';
-    const platform = globalArgs.type == 'plain' ? basePlatform : globalArgs.type;
-
-    const defaulInputPath = this.templatePath(basePlatform);
-    const platformInputPath = this.templatePath(globalArgs.type);
-
-    const outputPath = this.destinationPath(path.join(globalArgs.outputPath));
-    const defaultSourceConfig = this.fs.readJSON(this.templatePath(`${basePlatform}/__size__/.richmediarc`));
-
-    this.fs.copy(path.join(defaulInputPath, 'shared'), path.join(outputPath, 'shared'), { globOptions: { dot: true } });
-
-    //overwite with platform specific shared setup
-    if (platform != basePlatform) {
-      this.fs.copy(path.join(platformInputPath, 'shared'), path.join(outputPath, 'shared'), {
-        globOptions: { ignoreNoMatch: true, dot: true },
-      });
+    if (globalArgs.type  == 'doubleclick') {
+      prefixSharedFolder = 'shared_doubleclick';
+    } else if (globalArgs.type  == 'flashtalking') { 
+      prefixSharedFolder = 'shared_flashtalking';
     }
 
-    let sourceConfig = this.fs.readJSON(this.templatePath(`${platform}/__size__/.richmediarc`), defaultSourceConfig);
+    const outputPathShared = this.destinationPath(path.join(globalArgs.outputPath, 'shared'));
 
-    globalArgs.units.forEach((size) => {
+    this.fs.copy(this.templatePath('shared/css'), path.join(outputPathShared, 'css'));
+    this.fs.copy(this.templatePath('shared/img'), path.join(outputPathShared, 'img'));
+    this.fs.copy(this.templatePath('shared/script'), path.join(outputPathShared, 'script'));
+    this.fs.copy(this.templatePath('shared/fonts'), path.join(outputPathShared, 'fonts'));
+    this.fs.copy(this.templatePath('shared/.sharedrc'), path.join(outputPathShared, '.sharedrc'));
+    this.fs.copy(this.templatePath(`${prefixSharedFolder}/index.hbs`), path.join(outputPathShared, 'index.hbs'));
+
+    if (globalArgs.type  == 'doubleclick') {
+      this.fs.copy(this.templatePath('shared_doubleclick/script'), path.join(outputPathShared, 'script'));
+    }
+
+    const sourceConfig = this.fs.readJSON(this.templatePath('__size__/.richmediarc'));
+
+    globalArgs.units.forEach(size => {
       const [width, height] = size.split('x');
 
       const outputPath = this.destinationPath(path.join(globalArgs.outputPath, size));
 
-      //copy default setup
-      this.fs.copy(this.templatePath(`${basePlatform}/__size__`), outputPath, { globOptions: { dot: true } });
-
-      //overwite with platform specific setup, repacing var width/height when found in files
-      if (platform != basePlatform && fs.existsSync(this.templatePath(`${platform}/__size__`))) {
-        this.fs.copyTpl(this.templatePath(`${platform}/__size__`), outputPath, {
-          width,
-          height,
-          ignoreNoMatch: true,
-          globOptions: { dot: true },
-        });
+      if(!this.config.get('hasParameters')) {
+        var hasSeparateHTML = this.result.set_html.find(item => item === size);
+        var hasSeparateJS = this.result.set_js.find(item => item === size);
+        var hasSeparateCSS = this.result.set_css.find(item => item === size);
       }
 
+      if (globalArgs.type  == 'flashtalking') {
+        this.fs.copy(this.templatePath('shared_flashtalking/static'), this.destinationPath(path.join(outputPath, 'static')));
+  
+        this.fs.copyTpl(this.templatePath('shared_flashtalking/static/manifest.js'),this.destinationPath(path.join(outputPath, 'static/manifest.js')),
+          {
+            width,
+            height,
+          },
+        );
+      } 
+
       const entry = {
-        ...sourceConfig.settings.entry,
+        ...sourceConfig.settings.entry
       };
 
       const content = {
-        ...sourceConfig.content,
+        ...sourceConfig.content
       };
+
+      if(!this.config.get('hasParameters')) {
+        if(hasSeparateHTML){
+          entry.html = './index.hbs';
+
+          this.fs.copy(
+            this.templatePath(`${prefixSharedFolder}/index.hbs`),
+            this.destinationPath(path.join(outputPath, 'index.hbs'))
+          );
+        }
+
+        if(hasSeparateJS){
+          entry.js = './script/main.js';
+
+          this.fs.copy(
+            this.templatePath(`${prefixSharedFolder}/script`),
+            this.destinationPath(path.join(outputPath, 'script'))
+          );
+        }
+
+        if(hasSeparateCSS){
+          content.css = './css/style.css';
+
+          this.fs.copy(
+            this.templatePath('shared/css'),
+            this.destinationPath(path.join(outputPath, 'css'))
+          );
+        }
+      }
 
       let config = deepmerge(sourceConfig, {
         settings: {
@@ -63,12 +144,14 @@ module.exports = class extends Generator {
             height: parseInt(height, 10),
           },
         },
-        content,
+        content
       });
 
       this.fs.writeJSON(path.join(outputPath, '.richmediarc'), config);
     });
 
     this.fs.delete('.yo-rc.json');
+
   }
+
 };

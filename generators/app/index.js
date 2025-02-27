@@ -5,15 +5,15 @@ const tasks = {
   quick: 'Create quick unit (with default parameters)',
   multiple: 'Create display units (you can create multiple or just one)',
   banner3D: 'Create a 3D banner',
-  arguments: 'Create with arguments',
-};
+  arguments: 'Create with arguments'
+}
 
 module.exports = class App extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
-    this.argument('units', { type: String, required: false }); // array with sizes, coma separated
-    this.argument('type', { type: String, required: false }); // doubleclick, plain, flashtalking, etc
+    this.argument("units", { type: String, required: false }); // array with sizes, coma separated
+    this.argument("type", { type: String, required: false }); // doubleclick, plain, flashtalking, etc
 
     this.config.delete('hasParameters') // clean prev parameters
     this.config.delete('argsContext') // clean prev parameters
@@ -26,9 +26,10 @@ module.exports = class App extends Generator {
       this.config.set('argsContext', {
         units: this.options.units.replace(/\s/g, '').split(','),
         type: type,
-        outputPath: `./src/${type}/`,
+        outputPath: `./src/${type}/`
       });
     }
+
   }
 
   async questions() {
@@ -39,21 +40,26 @@ module.exports = class App extends Generator {
     -
     Create, change and start developing your display units with ease.
     `);
-
+    
     if (!this.config.get('hasParameters')) {
       this.result = await this.prompt([
         {
           type: 'list',
           name: 'type',
           message: 'What do you want to do?',
-          choices: [tasks.quick, tasks.multiple],
+          choices: [
+            tasks.quick,
+            tasks.multiple,
+          ],
         },
       ]);
     }
+    
   }
 
   async action() {
-    const task = this.config.get('hasParameters') ? 'Create with arguments' : this.result.type;
+    
+    const task = (this.config.get('hasParameters')) ? 'Create with arguments' : this.result.type;
 
     // Always run setup first if needed
     if (!hasInitialSetup(this)) {
