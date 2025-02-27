@@ -19,14 +19,13 @@ module.exports = class App extends Generator {
     this.config.delete('argsContext'); // clean prev parameters
 
     this.config.set('hasParameters', this.options.units ? true : false);
-
-    const type = this.options.type != null ? this.options.type : 'plain';
+    const type = this.options.type || 'plain';
 
     if (this.config.get('hasParameters')) {
       this.config.set('argsContext', {
         units: this.options.units.replace(/\s/g, '').split(','),
         type: type,
-        outputPath: `./src/${type}/`,
+        outputPath: `./src/${type}/`
       });
     }
   }
