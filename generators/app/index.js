@@ -52,45 +52,31 @@ module.exports = class App extends Generator {
   }
 
   async action() {
-    const task = this.config.get('hasParameters') ? 'Create with arguments' : this.result.type;
+    const task = this.config.get('hasParameters') ? tasks.arguments : this.result.type;
 
-    switch (task) {
-      case tasks.quick: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), {
-          units: ['300x250'],
-          outputPath: './src/plain/',
-          type: 'plain',
-          task: 'quick'
-        });
-        break;
-      }
-
-      case tasks.multiple: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
-        break;
-      }
-
-      case tasks.arguments: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
-        break;
-      }
-
-      default: {
-        break;
-      }
+    // Always run setup first if needed
+    if (!hasInitialSetup(this)) {
+      await this.composeWith(require.resolve('../setup'), { options: '' });
     }
 
+    switch (task) {
+      case tasks.quick:
+        await this.composeWith(require.resolve('../createDisplayQuickUnit'), {
+          set: ['300x250'],
+          outputPath: './src/plain/',
+          type: 'plain'
+        });
+        break;
+
+      case tasks.multiple:
+      case tasks.arguments:
+        await this.composeWith(require.resolve('../createDisplayUnitSet'), {
+          options: ''
+        });
+        break;
+
+      default:
+        break;
+    }
   }
 };
