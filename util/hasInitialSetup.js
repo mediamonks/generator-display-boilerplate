@@ -8,7 +8,7 @@ module.exports = function hasInitialSetup(ctx) {
     // Check if package.json exists
     const hasPackageJson = ctx.fs.exists(ctx.destinationPath('package.json'));
     if (!hasPackageJson) {
-      return true; // Allow continuation, setup will handle this
+      return false; // Allow continuation, setup will handle this
     }
 
     // Try to read package.json
@@ -16,7 +16,7 @@ module.exports = function hasInitialSetup(ctx) {
     
     // Basic validation
     if (!json || !json.dependencies || !json.scripts) {
-      return true; // Allow continuation, setup will handle this
+      return false; // Allow continuation, setup will handle this
     }
 
     // Check for required dependencies
@@ -27,6 +27,6 @@ module.exports = function hasInitialSetup(ctx) {
     );
   } catch (error) {
     // If any error occurs during check, allow continuation
-    return true;
+    return false;
   }
 };
