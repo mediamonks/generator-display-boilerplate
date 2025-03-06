@@ -15,18 +15,21 @@ module.exports = class App extends Generator {
     this.argument('units', { type: String, required: false }); // array with sizes, coma separated
     this.argument('type', { type: String, required: false }); // doubleclick, plain, flashtalking, etc
 
-    this.config.delete('hasParameters'); // clean prev parameters
-    this.config.delete('argsContext'); // clean prev parameters
+  }
 
-    this.config.set('hasParameters', this.options.units ? true : false);
+  initializing() {
+    // Move configuration setup to initializing phase
+    this.config.delete('hasParameters');
+    this.config.delete('argsContext');
 
-    const type = this.options.type != null ? this.options.type : 'plain';
+    this.config.set('hasParameters', Boolean(this.options.units));
+    const type = this.options.type || 'plain';
 
     if (this.config.get('hasParameters')) {
       this.config.set('argsContext', {
         units: this.options.units.replace(/\s/g, '').split(','),
         type: type,
-        outputPath: `./src/${type}/`,
+        outputPath: `./src/${type}/`
       });
     }
   }
@@ -55,13 +58,13 @@ module.exports = class App extends Generator {
   async action() {
     const task = this.config.get('hasParameters') ? 'Create with arguments' : this.result.type;
 
+    if (!await hasInitialSetup(this)) {
+      await this.composeWith(require.resolve('../setup'), { options: '' });
+    }
+
     switch (task) {
       case tasks.quick: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), {
+        await this.composeWith(require.resolve('../createDisplayUnitSet'), {
           units: ['300x250'],
           outputPath: './src/plain/',
           type: 'plain',
@@ -70,21 +73,9 @@ module.exports = class App extends Generator {
         break;
       }
 
-      case tasks.multiple: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
-        break;
-      }
-
+      case tasks.multiple:
       case tasks.arguments: {
-        if (!hasInitialSetup(this)) {
-          this.composeWith(require.resolve('../setup'), { options: '' });
-        }
-
-        this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
+        await this.composeWith(require.resolve('../createDisplayUnitSet'), { options: '' });
         break;
       }
 
